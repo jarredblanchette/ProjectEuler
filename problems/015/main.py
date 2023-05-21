@@ -19,26 +19,33 @@
 #
 # How many such routes are there through a 20×20 grid?
 
-def routes(width, height, lookup):
-    if width == 0 or height == 0:
-        return 1,lookup
 
-    if (width,height) in lookup or (height,width) in lookup:
-        return (lookup.get((width,height), None) or lookup.get((width,height),None)) , lookup
+def memorise(f):
+    known = {}
+
+    def wrapper(*args):
+        if args not in known:
+            known[args] = f(*args)
+        return known[args]
+
+    return wrapper
+
+
+@memorise
+def routes(width, height):
+    if width == 0 or height == 0:
+        return 1
 
     acc = 0
 
     # this is go right
-    r,lookup = routes(width-1,height,lookup)
-    acc += r
+    acc += routes(width - 1, height)
 
     # go down
-    r,lookup = routes(width,height-1,lookup)
-    acc += r
+    acc += routes(width, height - 1)
 
-    lookup[(width,height)] = acc
-    lookup[(height, width)] = acc
-    return acc , lookup
+    return acc
+
 
 if __name__ == '__main__':
-    print(routes(20,20,{})[0])
+    print(routes(20, 20))
