@@ -6,45 +6,56 @@
 # P_4 + P_7 = 22 + 70 = 92 = P_8. However, their difference, 70 - 22 = 48, is not pentagonal.
 # Find the pair of pentagonal numbers, P_j and P_k, for which their sum and difference are pentagonal and D = |P_k - P_j| is minimised;
 # what is the value of D?
-
 class NGonal:
-    values = [1]
-    generatorFunction = None
-
     def __init__(self, generator_function):
+        self.iter_start_index = 0
+        self.values = [1]
         self.generatorFunction = generator_function
 
     def __getitem__(self, item):
         while item > len(self.values):
             self.add_next()
-        return self.values[item - 1]
+        return self.values[item-1]
 
     def __contains__(self, item):
         while item > self.values[-1]:
             self.add_next()
         return item in self.values
 
-    def add_pentagonal(self, p_n):
+    def __iter__(self):
+        self.iter_index = self.iter_start_index
+        self.iter_start_index = 0
+        self.fill_to(self.iter_index)
+        return self
+
+    def __next__(self):
+        v = self[self.iter_index]
+        self.iter_index += 1
+        return v
+
+    def add_value(self, p_n):
         self.values.append(p_n)
+
+    def set_iter_start(self,n):
+        """Overrides the starting index of the iterator.  Sets the next iterator generated to start from n, rather than 0."""
+        self.iter_start_index = n
 
     def add_next(self):
         """calculate and insert the next pentagonal value"""
         n = len(self.values) + 1
         p_n = self.generatorFunction(n)
-        self.add_pentagonal(p_n)
+        self.add_value(p_n)
 
-    def get_index(self, value):
+    def index_of(self, value):
         if value not in self:
             return -1
         return self.values.index(value)
 
     def fill_to(self, k):
         """Helper function, expands our tracked values to ensure that int k is less than our largest value"""
-        while len(self.values) < k:
+        while len(self.values) <= k:
             self.add_next()
         return self[k]
-
-
 if __name__ == '__main__':
     pentagonals = NGonal(lambda x: int(x * (3 * x - 1) / 2))
     MAX_VALUE = 10000
