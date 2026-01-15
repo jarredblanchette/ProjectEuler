@@ -1,8 +1,8 @@
-import main
+import solution_042
 
 
 def test_isTriangle():
-    isTriangle = main.triangleGenerator()
+    isTriangle = solution_042.triangleGenerator()
     assert isTriangle(1) is True
     assert isTriangle(3) is True
     assert isTriangle(6) is True
@@ -25,8 +25,8 @@ def test_isTriangle():
 
 
 def test_score_word():
-    assert main.score_word('SKY') == 55
-    assert main.score_word('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == (26 + 1) * (26 / 2)  # one per letter
-    assert main.score_word('QWERTYUIOPASDFGHJKLZXCVBNM') == (26 + 1) * (26 / 2)  # order doesn't matter
-    assert main.score_word('AAAAA') == 5
-    assert main.score_word('YYYY') == 100
+    assert solution_042.score_word('SKY') == 55
+    assert solution_042.score_word('ABCDEFGHIJKLMNOPQRSTUVWXYZ') == (26 + 1) * (26 / 2)  # one per letter
+    assert solution_042.score_word('QWERTYUIOPASDFGHJKLZXCVBNM') == (26 + 1) * (26 / 2)  # order doesn't matter
+    assert solution_042.score_word('AAAAA') == 5
+    assert solution_042.score_word('YYYY') == 100
